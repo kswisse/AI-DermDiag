@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+models/*.pt
+models/*.pth
+models/*.onnx
+node_modules/
+frontend/dist/
+*.egg-info/
+.pytest_cache/
+.DS_Store
+data/
