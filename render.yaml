@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: ai-dermdiag
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: MODEL_PATH
+        value: models/dermdiag_model.pt
