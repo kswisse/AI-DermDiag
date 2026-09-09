@@ -5,6 +5,7 @@ __pycache__/
 models/*.pt
 models/*.pth
 models/*.onnx
+!models/dermdiag_model.pt
 node_modules/
 frontend/dist/
 *.egg-info/

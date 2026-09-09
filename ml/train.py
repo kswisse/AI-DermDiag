@@ -10,7 +10,7 @@ from ml.class_mapping import HAM10000_CLASSES
 from backend.config import settings
 
 
-def train(epochs=25, batch_size=32, lr=1e-3):
+def train(epochs=25, batch_size=32, lr=1e-3, resume=False):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Training on: {device}")
     data_dir = settings.HAM10000_DATA_DIR
@@ -20,8 +20,17 @@ def train(epochs=25, batch_size=32, lr=1e-3):
     optimizer = Adam(model.parameters(), lr=lr)
     scheduler = CosineAnnealingLR(optimizer, T_max=epochs)
     best_val_acc = 0.0
+    start_epoch = 0
+    
+    if resume and os.path.exists(settings.MODEL_PATH):
+        print(f"Resuming from checkpoint: {settings.MODEL_PATH}")
+        checkpoint = torch.load(settings.MODEL_PATH, map_location=device, weights_only=True)
+        model.load_state_dict(checkpoint["model_state_dict"])
+        best_val_acc = checkpoint.get("val_acc", 0.0)
+        print(f"Loaded checkpoint with val_acc={best_val_acc:.4f}")
+    
     os.makedirs("models", exist_ok=True)
-    for epoch in range(epochs):
+    for epoch in range(start_epoch, epochs):
         model.train()
         train_loss, train_correct, train_total = 0.0, 0, 0
         for images, labels in train_loader:
@@ -69,5 +78,6 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", type=int, default=25)
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--lr", type=float, default=1e-3)
+    parser.add_argument("--resume", action="store_true", help="Resume from existing checkpoint")
     args = parser.parse_args()
-    train(epochs=args.epochs, batch_size=args.batch_size, lr=args.lr)
+    train(epochs=args.epochs, batch_size=args.batch_size, lr=args.lr, resume=args.resume)
