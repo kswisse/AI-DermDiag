@@ -25,13 +25,29 @@ AI-DermDiag/
 ### 1. Clone and install
 
 ```bash
-git clone <repo>
-cd AI-Dermdiag
+git clone https://github.com/kswisse/AI-DermDiag.git
+cd AI-DermDiag
 pip install -r requirements.txt
 cd frontend && npm install && cd ..
 ```
 
-### 2. Download HAM10000
+### 2. Download the model weights
+
+The trained checkpoint is distributed as a GitHub release asset (not stored in git):
+
+```bash
+mkdir -p models
+curl -L -o models/dermdiag_model.pt https://github.com/kswisse/AI-DermDiag/releases/download/model-v1/dermdiag_model.pt
+```
+
+Windows (PowerShell):
+
+```powershell
+New-Item -ItemType Directory -Force models
+Invoke-WebRequest -Uri https://github.com/kswisse/AI-DermDiag/releases/download/model-v1/dermdiag_model.pt -OutFile models/dermdiag_model.pt
+```
+
+### 3. Download HAM10000
 
 Download from: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/DBW86T
 
@@ -45,19 +61,21 @@ data/
     └── ...
 ```
 
-### 3. Train the model
+### 4. Train the model
 
 ```bash
 python -m ml.train --epochs 25 --batch-size 32
 ```
 
-### 4. Evaluate
+(Only needed if you want to retrain; step 2 already gives you a working checkpoint.)
+
+### 5. Evaluate
 
 ```bash
 python -m ml.evaluate
 ```
 
-### 5. Run the app
+### 6. Run the app
 
 ```bash
 python -m backend.main
