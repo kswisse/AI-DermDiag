@@ -1,5 +1,8 @@
 # AI-DermDiag
 
+[![CI](https://github.com/kswisse/AI-DermDiag/actions/workflows/ci.yml/badge.svg)](https://github.com/kswisse/AI-DermDiag/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 AI-assisted skin lesion screening using HAM10000 dataset with EfficientNet-B0 and Grad-CAM explainability.
 
 ## Architecture
