@@ -12,3 +12,4 @@ frontend/dist/
 .pytest_cache/
 .DS_Store
 data/
+.venv-verify/
